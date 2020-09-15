@@ -25,6 +25,8 @@ public class ExtendedActiveDirectoryUserStoreManager extends ActiveDirectoryUser
             return false;
         }
     };
+    private static final String USER_GROUP_CLAIM = "http://wso2.org/claims/userGroup";
+    private static final String ADD_USER_SEARCH_FILTER = "AddUserSearchFilter";
 
     public ExtendedActiveDirectoryUserStoreManager() {
         super();
@@ -41,9 +43,12 @@ public class ExtendedActiveDirectoryUserStoreManager extends ActiveDirectoryUser
     public void doAddUser(String userName, Object credential, String[] roleList,
                           Map<String, String> claims, String profileName, boolean requirePasswordChange)
             throws UserStoreException {
-        String externalRole = claims.get("http://wso2.org/claims/userGroup");
+        String externalRole = claims.get(USER_GROUP_CLAIM);
         if( externalRole != null && externalRole.trim().length() > 0) {
             externalRole = UserCoreUtil.removeDomainFromName(externalRole);
+            if(log.isDebugEnabled()){
+                log.debug(USER_GROUP_CLAIM + " has group : " + externalRole);
+            }
             if (!doCheckExistingRole(externalRole)) {
                 String message = String
                         .format(UserCoreErrorConstants.ErrorMessages.ERROR_CODE_EXTERNAL_ROLE_NOT_EXISTS.getMessage(),
@@ -69,7 +74,7 @@ public class ExtendedActiveDirectoryUserStoreManager extends ActiveDirectoryUser
         }
         String searchBase = null;
         String userSearchFilter = realmConfig.getUserStoreProperty(LDAPConstants.USER_NAME_SEARCH_FILTER);
-        String addUserSearchFilter = realmConfig.getUserStoreProperty("AddUserSearchFilter");
+        String addUserSearchFilter = realmConfig.getUserStoreProperty(ADD_USER_SEARCH_FILTER);
         if (addUserSearchFilter != null && addUserSearchFilter.trim().length() > 0) {
             userSearchFilter = addUserSearchFilter;
         }
