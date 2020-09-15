@@ -14,7 +14,7 @@ Copy and place the built JAR artifact from the /target/org.wso2.custom.user.stor
 
 The group to which the user should be added is sent as a claim in the scim2 request, modify the scim2 schema extention to add this claim by following the steps below.
 
-Open the file <IS-HOME>/repository/conf/scim2-schema-extension.config.
+* Open the file <IS-HOME>/repository/conf/scim2-schema-extension.config.
 Add the following configuration at the end of the file, before the last element of the JSON array.
 ```
 {
@@ -33,18 +33,20 @@ Add the following configuration at the end of the file, before the last element 
 "referenceTypes":[]
 },
 ```
-Add userGroup to the subAttributes element of the last element of the JSON array, as shown below.
+* Add userGroup to the subAttributes element of the last element of the JSON array, as shown below.
 ```
 "subAttributes":"verifyEmail askPassword employeeNumber costCenter organization division department manager userGroup",
 ```
-Save the file and start Identity server.
+        
+* Save the file and start Identity server.
 
-Log in to the management console and add a local claim for the userGroup, "http://wso2.org/claims/userGroup". This claim will be read from the user store manager.(make sure to add the proper mapped attribute for the AD/LDAP)
+* Log in to the management console and add a local claim for the userGroup, "http://wso2.org/claims/userGroup". This claim will be read from the user store manager.(make sure to add the proper mapped attribute for the AD/LDAP)
 <img width="1407" alt="Screenshot 2020-09-16 at 2 50 42 AM" src="https://user-images.githubusercontent.com/47600906/93267724-bc6d7a80-f7c9-11ea-88fa-58452b996bbf.png">
-Add SCIM Claim Mapping
+
+* Add SCIM Claim Mapping
 <img width="1002" alt="Screenshot 2020-09-16 at 3 10 25 AM" src="https://user-images.githubusercontent.com/47600906/93268063-3d2c7680-f7ca-11ea-95b1-36321a78c771.png">
 
-In order to use the new userstore manager you can change the class name of the existing userstore file located at <IS_HOME>/repository/deployment/server/userstores/\<USERSTORE-DOMAIN\>.xml to either of the following classes, depending on the userstore type (AD/LDAP).
+* In order to use the new userstore manager you can change the class name of the existing userstore file located at <IS_HOME>/repository/deployment/server/userstores/\<USERSTORE-DOMAIN\>.xml to either of the following classes, depending on the userstore type (AD/LDAP).
 
 ```<UserStoreManager class="org.wso2.custom.user.store.manager.ExtendedActiveDirectoryUserStoreManager">```
 
@@ -53,7 +55,7 @@ In order to use the new userstore manager you can change the class name of the e
 Or a new userstore can be added from the management console.
 <img width="1092" alt="Screenshot 2020-09-16 at 2 09 53 AM" src="https://user-images.githubusercontent.com/47600906/93269231-3d2d7600-f7cc-11ea-936a-d6f16471ded2.png">
 
-For adding the user a wide search filter should be defined without any hardcoded groups, add this new search filter property to the <IS_HOME>/repository/deployment/server/userstores/\<USERSTORE-DOMAIN\>.xml in the following format.
+* For adding the user a wide search filter should be defined without any hardcoded groups, add this new search filter property to the <IS_HOME>/repository/deployment/server/userstores/\<USERSTORE-DOMAIN\>.xml in the following format.
 
 ```<Property name="AddUserSearchFilter">(&amp;(objectClass=user)(cn=?))</Property>```
 
