@@ -2,6 +2,8 @@ package org.wso2.custom.user.store.manager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.wso2.carbon.user.api.Properties;
+import org.wso2.carbon.user.api.Property;
 import org.wso2.carbon.user.api.RealmConfiguration;
 import org.wso2.carbon.user.core.UserCoreConstants;
 import org.wso2.carbon.user.core.UserRealm;
@@ -93,6 +95,15 @@ public class ExtendedActiveDirectoryUserStoreManager extends ActiveDirectoryUser
         }
         searchBase = realmConfig.getUserStoreProperty(LDAPConstants.USER_SEARCH_BASE);
         return getNameInSpaceForUserName(userName, searchBase, userSearchFilter);
+    }
+
+    public Properties getDefaultUserStoreProperties() {
+        Properties properties = super.getDefaultUserStoreProperties();
+        properties.setMandatoryProperties(ExtendedActiveDirectoryUserStoreConstants.EXTENDED_ACTIVE_DIRECTORY_UM_PROPERTIES.toArray
+                (new Property[ExtendedActiveDirectoryUserStoreConstants.EXTENDED_ACTIVE_DIRECTORY_UM_PROPERTIES.size()]));
+        properties.setOptionalProperties(ExtendedActiveDirectoryUserStoreConstants.EXTENDED_OPTIONAL_ACTIVE_DIRECTORY_UM_PROPERTIES.toArray
+                (new Property[ExtendedActiveDirectoryUserStoreConstants.EXTENDED_OPTIONAL_ACTIVE_DIRECTORY_UM_PROPERTIES.size()]));
+        return properties;
     }
 
 

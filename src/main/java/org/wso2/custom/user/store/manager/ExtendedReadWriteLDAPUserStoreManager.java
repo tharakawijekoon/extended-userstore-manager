@@ -2,6 +2,8 @@ package org.wso2.custom.user.store.manager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.wso2.carbon.user.api.Properties;
+import org.wso2.carbon.user.api.Property;
 import org.wso2.carbon.user.api.RealmConfiguration;
 import org.wso2.carbon.user.core.UserCoreConstants;
 import org.wso2.carbon.user.core.UserRealm;
@@ -95,6 +97,14 @@ public class ExtendedReadWriteLDAPUserStoreManager extends ReadWriteLDAPUserStor
         return getNameInSpaceForUserName(userName, searchBase, userSearchFilter);
     }
 
+    public Properties getDefaultUserStoreProperties() {
+        Properties properties = super.getDefaultUserStoreProperties();
+        properties.setMandatoryProperties(ExtendedReadWriteLDAPUserStoreConstants.EXTENDED_RWLDAP_USERSTORE_PROPERTIES.toArray
+                (new Property[ExtendedReadWriteLDAPUserStoreConstants.EXTENDED_RWLDAP_USERSTORE_PROPERTIES.size()]));
+        properties.setOptionalProperties(ExtendedReadWriteLDAPUserStoreConstants.EXTENDED_OPTINAL_RWLDAP_USERSTORE_PROPERTIES.toArray
+                (new Property[ExtendedReadWriteLDAPUserStoreConstants.EXTENDED_OPTINAL_RWLDAP_USERSTORE_PROPERTIES.size()]));
+        return properties;
+    }
 
     /**
      * Escaping ldap search filter special characters in a string
